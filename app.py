@@ -191,9 +191,12 @@ def translate_text(text, source_lang, target_lang, tokenizer, model):
     tokenizer.src_lang = source_lang
     inputs = tokenizer(text, return_tensors="pt", padding=True, truncation=True, max_length=512)
 
+    # Get the target language token ID
+    target_lang_token = tokenizer.convert_tokens_to_ids(target_lang)
+
     translated_tokens = model.generate(
         **inputs,
-        forced_bos_token_id=tokenizer.lang_code_to_id[target_lang],
+        forced_bos_token_id=target_lang_token,
         max_length=512
     )
 
